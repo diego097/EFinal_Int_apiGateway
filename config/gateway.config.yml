@@ -1,0 +1,83 @@
+http:
+  port: 8080
+admin:
+  port: 9876
+  host: localhost
+apiEndpoints:
+  api:
+    host: localhost
+    paths: '/ip'
+  alquileres:
+    host: localhost
+    paths:
+      -  '/api/createAlquiler'
+      -  '/api/listAlquiler'
+  vehiculos:
+    host: localhost
+    paths:
+      -  '/api/createVehiculo'
+      -  '/api/listVehiculo'
+  remates:
+    host: localhost
+    paths:
+      -  '/api/createVehiculo'
+      -  '/api/listVehiculo'
+serviceEndpoints:
+  httpbin:
+    url: 'https://httpbin.org'
+  alquilerService:
+    url: 'http://localhost:9000'
+  vehiculoService:
+    url: 'http://localhost:3000'
+  remateService:
+    url: 'http://localhost:5000'
+policies:
+  - basic-auth
+  - cors
+  - expression
+  - key-auth
+  - log
+  - oauth2
+  - proxy
+  - rate-limit
+pipelines:
+  default:
+    apiEndpoints:
+      - api 
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: httpbin 
+              changeOrigin: true
+  gesAlquileres:
+    apiEndpoints:
+      - alquileres 
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: alquilerService 
+              changeOrigin: true
+  gesVehiculos:
+    apiEndpoints:
+      - vehiculos 
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: vehiculoService 
+              changeOrigin: true   
+  gesRemates:
+    apiEndpoints:
+      - remates 
+    policies:
+    # Uncomment `key-auth:` when instructed to in the Getting Started guide.
+    # - key-auth:
+      - proxy:
+          - action:
+              serviceEndpoint: remateService 
+              changeOrigin: true          
